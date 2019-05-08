@@ -60,8 +60,8 @@ module ScormCloud
 
 		def get_metadata(course_id, options = {})
 			CourseService.validate_options(options, [:scope, :mdformat])
-			CourseService.validate_option_value(:scope, options, ['course', 'activity'])
-			CourseService.validate_option_value(:mdformat, options, ['summary', 'detail'])
+			CourseService.validate_option_value(options, :scope, ['course', 'activity'])
+			CourseService.validate_option_value(options, :mdformat, ['summary', 'detail'])
 			options[:courseid] = course_id
 			xml = connection.call("rustici.course.getMetadata", options)
 			xml.elements["//rsp/package"]
@@ -70,12 +70,12 @@ module ScormCloud
 	private
 		def self.validate_options(options, keys)
 			options.each_key do |key|
-				raise ArgumentError.new("Illegal argument: #{key}") unless keys.include?(key) 
+				raise ArgumentError.new("Illegal argument: #{key}") unless keys.include?(key)
 			end
 		end
-		def self.validate_option_value(option, options_hash, allowed)
-			value = options_hash[option]
-			raise ArgumentError.new("Illegal #{option} argument: #{value}") if value && !allowed.include?(value)
+		def self.validate_option_value(options_hash, option_key, allowed_values)
+			value = options_hash[option_key]
+			raise ArgumentError.new("Illegal #{option_key} argument: #{value}") if value && !allowed_values.include?(value)
 		end
 	end
 end
