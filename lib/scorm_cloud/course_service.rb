@@ -2,8 +2,7 @@ module ScormCloud
 	class CourseService < BaseService
 
 		not_implemented :import_cours_async, :get_async_import_result,
-				:properties, :get_assets, :update_assets,
-				:get_file_structure, :delete_files, :get_metadata
+				:properties, :update_assets, :delete_files
 
 		# TODO: Handle Warnings
 		def import_course(course_id, path)
@@ -36,7 +35,7 @@ module ScormCloud
 
 		def get_course_list(options = {})
 			xml = connection.call("rustici.course.getCourseList", options)
-			xml.elements["/rsp/courselist"].map { |e| Course.from_xml(e) }
+			xml.elements["//rsp/courselist"].map { |e| Course.from_xml(e) }
 		end
 
 		def preview(course_id, redirect_url)
@@ -48,6 +47,36 @@ module ScormCloud
 			xml_to_attributes(xml)
 		end
 
+		def get_assets(course_id, path = nil)
+			options = {courseid: course_id}
+			options[:path] = path unless path.nil?
+			connection.call_raw("rustici.course.getAssets", options)
+		end
+
+		def get_file_structure(course_id)
+			xml = connection.call("rustici.course.getFileStructure", :courseid => course_id)
+			xml.elements["//rsp/dir"]
+		end
+
+		def get_metadata(course_id, options = {})
+			CourseService.validate_options(options, [:scope, :mdformat])
+			CourseService.validate_option_value(:scope, options, ['course', 'activity'])
+			CourseService.validate_option_value(:mdformat, options, ['summary', 'detail'])
+			options[:courseid] = course_id
+			xml = connection.call("rustici.course.getMetadata", options)
+			xml.elements["//rsp/package"]
+		end
+
+	private
+		def self.validate_options(options, keys)
+			options.each_key do |key|
+				raise ArgumentError.new("Illegal argument: #{key}") unless keys.include?(key) 
+			end
+		end
+		def self.validate_option_value(option, options_hash, allowed)
+			value = options_hash[option]
+			raise ArgumentError.new("Illegal #{option} argument: #{value}") if value && !allowed.include?(value)
+		end
 	end
 end
 

@@ -13,16 +13,16 @@ describe "Rustici Web Service API" do
 		it { should respond_to(:get_manifest).with(1).argument }
  		it { should respond_to(:get_course_list).with(0).argument }
  		it { should respond_to(:get_course_list).with(1).argument }
+		it { should respond_to(:get_assets).with(2).arguments }
+		it { should respond_to(:get_file_structure).with(1).argument }
+		it { should respond_to(:get_metadata).with(3).arguments }
 
  		# Not Implemented
-		it { should respond_to(:get_assets).with(0).arguments }
 		it { should respond_to(:update_assets).with(0).arguments }
  		it { should respond_to(:import_cours_async).with(0).arguments }
 		it { should respond_to(:get_async_import_result).with(0).arguments }
 		it { should respond_to(:properties).with(0).arguments }
-		it { should respond_to(:get_file_structure).with(0).arguments }
 		it { should respond_to(:delete_files).with(0).arguments }
-		it { should respond_to(:get_metadata).with(0).arguments }
 		
 
 
