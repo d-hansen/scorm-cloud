@@ -29,13 +29,20 @@ module ScormCloud
 			true
 		end
 
-		def get_manifest(course_id)
-		 	connection.call_raw("rustici.course.getManifest", :courseid => course_id)
+		def get_manifest(course_id, version_id = nil)
+		 	options = {:courseid => course_id}
+		 	options[:versionid] = version_id unless version_id.nil?
+		 	connection.call_raw("rustici.course.getManifest", options)
 		end
 
 		def get_course_list(options = {})
 			xml = connection.call("rustici.course.getCourseList", options)
 			xml.elements["//rsp/courselist"].map { |e| Course.from_xml(e) }
+		end
+
+		def get_course_detail(course_id)
+		 	xml = connection.call("rustici.course.getCourseDetail", :courseid => course_id)
+			xml.elements["//rsp/course"]
 		end
 
 		def preview(course_id, redirect_url)
@@ -47,8 +54,9 @@ module ScormCloud
 			xml_to_attributes(xml)
 		end
 
-		def get_assets(course_id, path = nil)
-			options = {courseid: course_id}
+		def get_assets(course_id, path = nil, options = {})
+			CourseService.validate_options(options, [:versionid])
+			options[:courseid] = course_id
 			options[:path] = path unless path.nil?
 			connection.call_raw("rustici.course.getAssets", options)
 		end

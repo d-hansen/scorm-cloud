@@ -1,3 +1,3 @@
 module ScormCloud
-  VERSION = "0.0.6.mpc.4"
+  VERSION = "0.0.6.mpc.5"
 end
