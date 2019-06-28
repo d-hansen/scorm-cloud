@@ -9,6 +9,7 @@ describe "Rustici Web Service API" do
 		it { should respond_to(:create_registration).with(6).arguments }
 		it { should respond_to(:get_registration_list).with(0).arguments }
 		it { should respond_to(:get_registration_list).with(1).arguments }
+		it { should respond_to(:get_registration_detail).with(1).arguments }
 		it { should respond_to(:delete_registration).with(1).arguments }
 		it { should respond_to(:reset_registration).with(1).arguments }
 		it { should respond_to(:get_registration_result).with(1).arguments }
