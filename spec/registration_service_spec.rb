@@ -18,10 +18,10 @@ describe "Rustici Web Service API" do
 		it { should respond_to(:get_registration_list_results).with(1).arguments }
 		it { should respond_to(:launch).with(2).arguments }
 		it { should respond_to(:launch).with(3).arguments }
+		it { should respond_to(:get_launch_history).with(1).arguments }
+		it { should respond_to(:get_launch_info).with(1).arguments }
 
 		# not implemented
-		it { should respond_to(:get_launch_history) }
-		it { should respond_to(:get_launch_info) }
 		it { should respond_to(:reset_global_objectives) }
 		it { should respond_to(:update_learner_info) }
 		it { should respond_to(:test_registration_post_url) }

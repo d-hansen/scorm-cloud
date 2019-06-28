@@ -1,9 +1,7 @@
 module ScormCloud
 	class RegistrationService < BaseService
 
-		not_implemented :get_launch_history, :get_launch_info,
-                        :reset_global_objectives, :update_learner_info,
-                        :test_registration_post_url
+		not_implemented :reset_global_objectives, :update_learner_info, :test_registration_post_url
 
 		def create_registration(course_id, reg_id, first_name, last_name, learner_id, options = {})
 			options.merge!({:courseid => course_id, :regid => reg_id,
@@ -18,13 +16,19 @@ module ScormCloud
 			!xml.elements["/rsp/success"].nil?
 		end
 
+		def reset_registration(reg_id)
+			xml = connection.call("rustici.registration.resetRegistration", {:regid => reg_id })
+			!xml.elements["/rsp/success"].nil?
+		end
+
  		def get_registration_list(options = {})
 			xml = connection.call("rustici.registration.getRegistrationList", options)
 			xml.elements["/rsp/registrationlist"].map { |e| Registration.from_xml(e) }
 		end
 
-		def get_registration_detail(reg_id)
-			xml = connection.call("rustici.registration.getRegistrationDetail", {:regid => reg_id})
+		def get_registration_detail(reg_id, options = {})
+			options.merge!({:regid => reg_id})
+			xml = connection.call("rustici.registration.getRegistrationDetail", options)
                         xml.elements["/rsp/registration"]
 		end
 
@@ -48,11 +52,15 @@ module ScormCloud
 			connection.launch_url("rustici.registration.launch", options)
 		end
 
-		def reset_registration(reg_id)
-			xml = connection.call("rustici.registration.resetRegistration", {:regid => reg_id })
-			!xml.elements["/rsp/success"].nil?
+		def get_launch_history(reg_id, options = {})
+			options.merge!({:regid => reg_id})
+			connection.call("rustici.registration.getLaunchHistory", options)
 		end
 
+		def get_launch_info(launch_id, options = {})
+			options.merge!({:launchid => launch_id})
+			connection.call("rustici.registration.getLaunchInfo", options)
+		end
 
 	end
 end
