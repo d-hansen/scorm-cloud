@@ -1,8 +1,7 @@
 module ScormCloud
 	class CourseService < BaseService
 
-		not_implemented :import_cours_async, :get_async_import_result,
-				:properties, :update_assets, :delete_files
+		not_implemented :import_cours_async, :get_async_import_result, :properties, :delete_files
 
 		# TODO: Handle Warnings
 		def import_course(course_id, path)
@@ -61,8 +60,17 @@ module ScormCloud
 			connection.call_raw("rustici.course.getAssets", options)
 		end
 
-		def get_file_structure(course_id)
-			xml = connection.call("rustici.course.getFileStructure", :courseid => course_id)
+		def update_assets(course_id, path = nil, options = {})
+			CourseService.validate_options(options, [:versionid])
+			options[:courseid] = course_id
+			xml = connection.post("rustici.course.updateAssets", path, options)
+			xml.elements['//rsp/success']
+		end
+
+		def get_file_structure(course_id, options = {})
+			CourseService.validate_options(options, [:versionid])
+			options[:courseid] = course_id
+			xml = connection.call("rustici.course.getFileStructure", options)
 			xml.elements["//rsp/dir"]
 		end
 
