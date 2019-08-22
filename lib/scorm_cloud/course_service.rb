@@ -55,22 +55,20 @@ module ScormCloud
 
 		def get_assets(course_id, path = nil, options = {})
 			CourseService.validate_options(options, [:versionid])
-			options[:courseid] = course_id
-			options[:path] = path unless path.nil?
-			connection.call_raw("rustici.course.getAssets", options)
+			params = options.merge({:courseid => course_id})
+			params[:path] = path unless path.nil?
+			connection.call_raw("rustici.course.getAssets", params)
 		end
 
 		def update_assets(course_id, path = nil, options = {})
 			CourseService.validate_options(options, [:versionid])
-			options[:courseid] = course_id
-			xml = connection.post("rustici.course.updateAssets", path, options)
+			xml = connection.post("rustici.course.updateAssets", path, options.merge({:courseid => course_id}))
 			xml.elements['//rsp/success']
 		end
 
 		def get_file_structure(course_id, options = {})
 			CourseService.validate_options(options, [:versionid])
-			options[:courseid] = course_id
-			xml = connection.call("rustici.course.getFileStructure", options)
+			xml = connection.call("rustici.course.getFileStructure", options.merge({:courseid => course_id}))
 			xml.elements["//rsp/dir"]
 		end
 
@@ -78,8 +76,7 @@ module ScormCloud
 			CourseService.validate_options(options, [:scope, :mdformat])
 			CourseService.validate_option_value(options, :scope, ['course', 'activity'])
 			CourseService.validate_option_value(options, :mdformat, ['summary', 'detail'])
-			options[:courseid] = course_id
-			xml = connection.call("rustici.course.getMetadata", options)
+			xml = connection.call("rustici.course.getMetadata", options.merge({:courseid => course_id}))
 			xml.elements["//rsp/package"]
 		end
 
