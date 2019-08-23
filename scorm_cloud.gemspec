@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "scorm_cloud/version"
 
 Gem::Specification.new do |s|
-  s.name        = "scorm_cloud"
+  s.name        = "scorm_cloud_mpc"
   s.version     = ScormCloud::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Ken Richard", "David Hansen"]
