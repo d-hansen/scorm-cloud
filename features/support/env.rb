@@ -9,7 +9,7 @@ end
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require File.join(File.dirname(__FILE__), '/../../spec/apikey.rb')
-require 'scorm_cloud'
+require 'scorm_cloud_mpc'
 
 require 'rspec/expectations'
 
