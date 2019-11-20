@@ -1,7 +1,7 @@
 module ScormCloud
 	class RegistrationService < BaseService
 
-		not_implemented :reset_global_objectives, :update_learner_info, :test_registration_post_url
+		not_implemented :reset_global_objectives, :test_registration_post_url
 
 		def create_registration(course_id, reg_id, first_name, last_name, learner_id, options = {})
 			xml = connection.call("rustici.registration.createRegistration",
@@ -60,5 +60,10 @@ module ScormCloud
 			connection.call("rustici.registration.getLaunchInfo", options.merge({:launchid => launch_id}))
 		end
 
+		def update_learner_info(learner_id, fname, lname, options = {})
+			xml = connection.call("rustici.registration.updateLearnerInfo",
+                                        options.merge({:learnerid => learner_id, :fname => fname, :lname => lname}))
+			!xml.elements["/rsp/success"].nil?
+		end
 	end
 end
