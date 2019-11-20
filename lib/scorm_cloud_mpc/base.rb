@@ -25,14 +25,12 @@ module ScormCloud
 		def post(method, path, params = {})
 			url = URI.parse(prepare_url(method, params))
 			body = nil
-			File.open(path) do |f|
-  				req = Net::HTTP::Post::Multipart.new "#{url.path}?#{url.query}",
-    				"file" => UploadIO.new(f, "application/zip", "scorm.zip")
-  				res = Net::HTTP.start(url.host, url.port) do |http|
+  			req = Net::HTTP::Post::Multipart.new "#{url.path}?#{url.query}",
+    				"file" => UploadIO.new(path, "application/zip", "scorm.zip")
+  			res = Net::HTTP.start(url.host, url.port) do |http|
     				http.request(req)
-  				end
-  				body = res.body
-			end
+  			end
+  			body = res.body
 			REXML::Document.new(body)
 		end
 
