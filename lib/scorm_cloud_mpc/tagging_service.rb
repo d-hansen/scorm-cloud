@@ -12,17 +12,17 @@ module ScormCloud
 		end
 
 		def set_learner_tags(learner_id, tags)
-			xml = connection.call("rustici.tagging.setLearnerTags", {:regid => reg_id, :tags => tags})
+			xml = connection.call("rustici.tagging.setLearnerTags", {:learnerid => learner_id, :tags => tags})
 			!xml.elements["/rsp/success"].nil?
 		end
 
 		def add_learner_tag(learner_id, tag)
-			xml = connection.call("rustici.tagging.addLearnerTag", {:regid => reg_id, :tag => tag})
+			xml = connection.call("rustici.tagging.addLearnerTag", {:learnerid => learner_id, :tag => tag})
 			!xml.elements["/rsp/success"].nil?
 		end
 
 		def remove_learner_tag(learner_id, tag)
-			xml = connection.call("rustici.tagging.removeLearnerTag", {:regid => reg_id, :tag => tag})
+			xml = connection.call("rustici.tagging.removeLearnerTag", {:learnerid => learner_id, :tag => tag})
 			!xml.elements["/rsp/success"].nil?
 		end
 	end
