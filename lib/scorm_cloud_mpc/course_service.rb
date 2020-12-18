@@ -18,8 +18,10 @@ module ScormCloud
 			connection.call_raw("rustici.course.exists", :courseid => course_id).include?("<result>true</result>")
 		end
 
-		def get_attributes(course_id)
-			xml = connection.call("rustici.course.getAttributes", :courseid => course_id)
+		def get_attributes(course_id, version_id = nil)
+		 	options = {:courseid => course_id}
+		 	options[:versionid] = version_id unless version_id.nil?
+			xml = connection.call("rustici.course.getAttributes", options)
 			xml_to_attributes(xml)
 		end
 
