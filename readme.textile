@@ -1,4 +1,4 @@
-h1. Rustici SCORM Cloud Ruby Client
+h1. Rustici SCORM Cloud v1 Ruby Client
 
 bc. Let me know if you are interested in taking it over. I developed the code but never
 actually used it in production. Use with caution.
