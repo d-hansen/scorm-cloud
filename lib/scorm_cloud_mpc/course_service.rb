@@ -68,6 +68,14 @@ module ScormCloud
 			xml.elements['//rsp/success']
 		end
 
+                def delete_files(course_id, paths, options = {})
+			CourseService.validate_options(options, [:versionid])
+			params = options.merge({:courseid => course_id})
+			params[:path] = paths
+			xml = connection.call("rustici.course.deleteFiles", params)
+			xml.elements["//rsp/results"]
+                end
+
 		def get_file_structure(course_id, options = {})
 			CourseService.validate_options(options, [:versionid])
 			xml = connection.call("rustici.course.getFileStructure", options.merge({:courseid => course_id}))

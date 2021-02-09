@@ -43,7 +43,7 @@ module ScormCloud
 			params[:method] = method
 			params[:appid] = @appid
 			params[:ts] = timestamp
-			html_params = params.map { |k,v| "#{k.to_s}=#{v}" }.join("&")
+			html_params = params.map { |k,v| v.is_a?(Array) ? v.map { |e| "#{k.to_s}=#{e}" }.join("&") : "#{k.to_s}=#{v}" }.join("&")
 
 			raw = @secret + params.keys.
 					sort{ |a,b| a.to_s.downcase <=> b.to_s.downcase }.
